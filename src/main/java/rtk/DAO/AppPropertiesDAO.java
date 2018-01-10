@@ -5,10 +5,8 @@
  */
 package rtk.DAO;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import rtk.beans.AppProperties;
-import rtk.interfaces.daoInterface;
 
 /**
  *
