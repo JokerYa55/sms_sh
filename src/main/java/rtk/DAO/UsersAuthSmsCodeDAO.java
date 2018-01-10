@@ -5,6 +5,7 @@
  */
 package rtk.DAO;
 
+import javax.persistence.EntityManager;
 import rtk.beans.UsersAuthSmsCode;
 
 /**
@@ -12,5 +13,9 @@ import rtk.beans.UsersAuthSmsCode;
  * @author vasil
  */
 public class UsersAuthSmsCodeDAO extends abstractDAO<UsersAuthSmsCode, Long> {
+
+    public UsersAuthSmsCodeDAO(EntityManager em) {
+        super(em);
+    }
 
 }

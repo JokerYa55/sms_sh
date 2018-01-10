@@ -5,6 +5,7 @@
  */
 package rtk.DAO;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import rtk.beans.AppProperties;
 
@@ -13,6 +14,10 @@ import rtk.beans.AppProperties;
  * @author vasil
  */
 public class AppPropertiesDAO extends abstractDAO<AppProperties, Long> {
+
+    public AppPropertiesDAO(EntityManager em) {
+        super(em);
+    }
 
 //    private final EntityManager em;
 //
@@ -26,8 +31,10 @@ public class AppPropertiesDAO extends abstractDAO<AppProperties, Long> {
 //    }
 //
     public AppProperties getItem(String id) {
+        //em.getTransaction().begin();
         TypedQuery<AppProperties> query = getEM().createNamedQuery("findByProperties", AppProperties.class);
         query.setParameter("pname", id);
+        //em.getTransaction().commit();
         return query.getSingleResult();
     }
 

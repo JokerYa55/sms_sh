@@ -7,9 +7,11 @@ package rtk.DAO;
 
 import java.util.List;
 import java.util.Map;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import org.jboss.logging.Logger;
 import rtk.interfaces.daoInterface;
 
@@ -23,19 +25,21 @@ public abstract class abstractDAO<T, V> implements daoInterface<T, V> {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    private EntityManager em;
+    
+    private EntityManager em;    
     private static EntityManagerFactory emf;
 
-    public abstractDAO() {
+    public abstractDAO(EntityManager em) {
         log.info("abstractDAO => " + emf);
-        try {
-            if (emf == null) {
-                this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
-            }
-            em = emf.createEntityManager();
-        } catch (Exception e) {
-            log.log(Logger.Level.ERROR, e);
-        }
+        this.em = em;
+//        try {
+//            if (emf == null) {
+//                this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
+//            }
+//            em = emf.createEntityManager();
+//        } catch (Exception e) {
+//            log.log(Logger.Level.ERROR, e);
+//        }
     }
 
     @Override
@@ -45,43 +49,43 @@ public abstract class abstractDAO<T, V> implements daoInterface<T, V> {
 
     @Override
     public List<T> getList(int startIdx, int countRec, String jpqName, Class<T> cl) {
-        log.info("getList");
+        log.info("getList => " + em);
         return daoInterface.super.getList(startIdx, countRec, jpqName, cl); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<T> getList(String jpqName, Class<T> cl, Map<String, Object> params) {
-        log.info("getList");
+        log.info("getList => " + em);
         return daoInterface.super.getList(jpqName, cl, params); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<T> getList(String jpqName, Class<T> cl) {
-        log.info("getList");
+        log.info("getList => " + em);
         return daoInterface.super.getList(jpqName, cl); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public T getItem(long id, String jpqName, Class<T> cl) {
-        log.info("getItem");
+        log.info("getItem => " + em);
         return daoInterface.super.getItem(id, jpqName, cl); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean updateItem(T Item) {
-        log.info("updateItem");
+        log.info("updateItem => " + em);
         return daoInterface.super.updateItem(Item); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean deleteItem(T Item) {
-        log.info("deleteItem");
+        log.info("deleteItem => " + em);
         return daoInterface.super.deleteItem(Item); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public T addItem(T Item) {
-        log.info("addItem");
+        log.info("addItem => " + em);
         return daoInterface.super.addItem(Item); //To change body of generated methods, choose Tools | Templates.
     }
 
