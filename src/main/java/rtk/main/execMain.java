@@ -33,7 +33,7 @@ import rtk.beans.UsersAuthSmsCode;
  */
 @Singleton
 @Local(execMain.class)
-//@Lock(LockType.WRITE)
+@Lock(LockType.WRITE)
 public class execMain {
 
     private final Logger log = Logger.getLogger(getClass().getName());
@@ -87,6 +87,7 @@ public class execMain {
             List<UsersAuthSmsCode> smsList = logSmsDAO.getList("UsersAuthSmsCode.findByStatus", UsersAuthSmsCode.class, params);
             smsList.forEach((t) -> {
                 log.info("t => " + t);
+                log.info("tel => " + t.getUserId().getPhone());
             });
 
         } catch (Exception e) {
