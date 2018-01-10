@@ -6,6 +6,9 @@
 package rtk.main;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Local;
@@ -14,13 +17,12 @@ import javax.ejb.LockType;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Timer;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import org.jboss.logging.Logger;
 import rtk.DAO.AppPropertiesDAO;
+import rtk.DAO.UsersAuthSmsCodeDAO;
 import rtk.beans.AppProperties;
+import rtk.beans.UsersAuthSmsCode;
 
 /**
  *
@@ -28,7 +30,7 @@ import rtk.beans.AppProperties;
  */
 @Singleton
 @Local(execMain.class)
-@Lock(LockType.WRITE)
+//@Lock(LockType.WRITE)
 public class execMain {
 
     private final Logger log = Logger.getLogger(getClass().getName());
@@ -74,7 +76,13 @@ public class execMain {
             String maxRecUserLog = getAppParams("max_rec_user_log", "30");
             log.info("max_rec_user_log = " + maxRecUserLog);
             
-            
+            UsersAuthSmsCodeDAO logSmsDAO = new UsersAuthSmsCodeDAO();
+            Map<String, Object> params = new HashMap();
+            params.put("status", false);
+            List<UsersAuthSmsCode> smsList = logSmsDAO.getList("UsersAuthSmsCode.findByStatus", UsersAuthSmsCode.class, params);
+            smsList.forEach((t) -> {
+                log.info("t => " + t);
+            });
             
         } catch (Exception e) {
             log.log(Logger.Level.ERROR, e);

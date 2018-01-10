@@ -13,7 +13,6 @@ import javax.persistence.Persistence;
 import org.jboss.logging.Logger;
 import rtk.interfaces.daoInterface;
 
-
 /**
  *
  * @author vasiliy.andricov
@@ -28,10 +27,15 @@ public abstract class abstractDAO<T, V> implements daoInterface<T, V> {
     private static EntityManagerFactory emf;
 
     public abstractDAO() {
-        if (emf == null) {
-            this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
+        log.info("abstractDAO => " + emf);
+        try {
+            if (emf == null) {
+                this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
+            }
+            em = emf.createEntityManager();
+        } catch (Exception e) {
+            log.log(Logger.Level.ERROR, e);
         }
-        em = emf.createEntityManager();
     }
 
     @Override
@@ -80,6 +84,5 @@ public abstract class abstractDAO<T, V> implements daoInterface<T, V> {
         log.info("addItem");
         return daoInterface.super.addItem(Item); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
 }

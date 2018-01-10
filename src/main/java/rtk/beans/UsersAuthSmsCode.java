@@ -124,17 +124,17 @@ public class UsersAuthSmsCode implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "rtk.XMLUtil.TUsersAuthSmsCode[ id=" + id + " ]";
-    }
-
     public UserEntity getUserId() {
         return userId;
     }
 
     public void setUserId(UserEntity userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "UsersAuthSmsCode{" + "id=" + id + ", dateCode=" + dateCode + ", code=" + code + ", status=" + status + ", userId=" + userId + '}';
     }
 
 }
