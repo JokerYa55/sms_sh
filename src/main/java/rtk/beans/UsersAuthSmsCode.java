@@ -134,7 +134,7 @@ public class UsersAuthSmsCode implements Serializable {
 
     @Override
     public String toString() {
-        return "UsersAuthSmsCode{" + "id=" + id + ", code=" + code + ", status=" + status + ", userId=" + userId + '}';
+        return "UsersAuthSmsCode{" + "id=" + id + ", code=" + code + ", status=" + status + '}';
     }
 
 }
