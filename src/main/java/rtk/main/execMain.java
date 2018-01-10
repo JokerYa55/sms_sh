@@ -53,6 +53,15 @@ public class execMain {
     @Schedule(minute = "*/1", hour = "*")
     @Lock(LockType.WRITE)
     public synchronized void runSh(Timer time) {
-        log.info(String.format("******************* %s ****************************", new Date()));
+        try {
+            log.info(String.format("******************* %s ****************************", new Date()));
+            try {
+                em = emf.createEntityManager();
+            } catch (Exception em_ex) {
+                log.error(em_ex.getMessage());
+            }
+        } catch (Exception e) {
+            log.log(Logger.Level.ERROR, e);
+        }
     }
 }
