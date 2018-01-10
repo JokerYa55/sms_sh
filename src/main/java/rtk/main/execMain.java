@@ -37,15 +37,15 @@ public class execMain {
     //private final String propFileName = "app.properties";
 
     //@PersistenceContext(unitName = "elk_sh_jpa")
-    protected EntityManager em;
-    protected static EntityManagerFactory emf;
+//    protected EntityManager em;
+//    protected static EntityManagerFactory emf;
 
     @PostConstruct
     public void postConstruct() {
         log.debug("postConstruct");
-        if (emf == null) {
-            this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
-        }
+//        if (emf == null) {
+//            this.emf = Persistence.createEntityManagerFactory("sms_sheduler_jpa");
+//        }
     }
 
     @PreDestroy
@@ -58,11 +58,11 @@ public class execMain {
     public synchronized void runSh(Timer time) {
         try {
             log.info(String.format("******************* %s ****************************", new Date()));
-            try {
-                em = emf.createEntityManager();
-            } catch (Exception em_ex) {
-                log.error(em_ex.getMessage());
-            }
+//            try {
+//                em = emf.createEntityManager();
+//            } catch (Exception em_ex) {
+//                log.error(em_ex.getMessage());
+//            }
             
             log.info("START \t\t\t=> " + (new Date()).toString());
             log.info("NEXT START \t\t=> " + time.getNextTimeout());
@@ -74,6 +74,8 @@ public class execMain {
             String maxRecUserLog = getAppParams("max_rec_user_log", "30");
             log.info("max_rec_user_log = " + maxRecUserLog);
             
+            
+            
         } catch (Exception e) {
             log.log(Logger.Level.ERROR, e);
         }
@@ -82,7 +84,7 @@ public class execMain {
     private String getAppParams(String pName, String pDefVal) {
         String res = null;
         try {
-            AppPropertiesDAO appDAO = new AppPropertiesDAO(em);
+            AppPropertiesDAO appDAO = new AppPropertiesDAO();
             AppProperties prop = null;
             try {
                 prop = appDAO.getItem(pName);

@@ -14,21 +14,21 @@ import rtk.interfaces.daoInterface;
  *
  * @author vasil
  */
-public class AppPropertiesDAO implements daoInterface<AppProperties, Long> {
+public class AppPropertiesDAO extends abstractDAO<AppProperties, Long> {
 
-    private final EntityManager em;
-
-    public AppPropertiesDAO(EntityManager em) {
-        this.em = em;
-    }
-
-    @Override
-    public EntityManager getEM() {
-        return this.em;
-    }
-
+//    private final EntityManager em;
+//
+//    public AppPropertiesDAO(EntityManager em) {
+//        this.em = em;
+//    }
+//
+//    @Override
+//    public EntityManager getEM() {
+//        return this.em;
+//    }
+//
     public AppProperties getItem(String id) {
-        TypedQuery<AppProperties> query = em.createNamedQuery("findByProperties", AppProperties.class);
+        TypedQuery<AppProperties> query = getEM().createNamedQuery("findByProperties", AppProperties.class);
         query.setParameter("pname", id);
         return query.getSingleResult();
     }

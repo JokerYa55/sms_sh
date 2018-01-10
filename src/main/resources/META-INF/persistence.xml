@@ -3,8 +3,8 @@
   <persistence-unit name="sms_sheduler_jpa" transaction-type="RESOURCE_LOCAL">
     <jta-data-source>java:/DBUserELK</jta-data-source>
     <class>rtk.beans.AppProperties</class>
-    <class>rtk.beans.TUsersAuthSmsCode</class>
     <class>rtk.beans.UserEntity</class>
+    <class>rtk.beans.UsersAuthSmsCode</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

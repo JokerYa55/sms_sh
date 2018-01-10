@@ -31,12 +31,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "t_users_auth_sms_code")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TUsersAuthSmsCode.findAll", query = "SELECT t FROM TUsersAuthSmsCode t")
-    , @NamedQuery(name = "TUsersAuthSmsCode.findById", query = "SELECT t FROM TUsersAuthSmsCode t WHERE t.id = :id")
-    , @NamedQuery(name = "TUsersAuthSmsCode.findByDateCode", query = "SELECT t FROM TUsersAuthSmsCode t WHERE t.dateCode = :dateCode")
-    , @NamedQuery(name = "TUsersAuthSmsCode.findByCode", query = "SELECT t FROM TUsersAuthSmsCode t WHERE t.code = :code")
-    , @NamedQuery(name = "TUsersAuthSmsCode.findByStatus", query = "SELECT t FROM TUsersAuthSmsCode t WHERE t.status = :status")})
-public class TUsersAuthSmsCode implements Serializable {
+    @NamedQuery(name = "UsersAuthSmsCode.findAll", query = "SELECT t FROM UsersAuthSmsCode t")
+    , @NamedQuery(name = "UsersAuthSmsCode.findById", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.id = :id")
+    , @NamedQuery(name = "UsersAuthSmsCode.findByDateCode", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.dateCode = :dateCode")
+    , @NamedQuery(name = "UsersAuthSmsCode.findByCode", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.code = :code")
+    , @NamedQuery(name = "UsersAuthSmsCode.findByStatus", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.status = :status")})
+public class UsersAuthSmsCode implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,14 +59,14 @@ public class TUsersAuthSmsCode implements Serializable {
     @ManyToOne
     private UserEntity userId;
 
-    public TUsersAuthSmsCode() {
+    public UsersAuthSmsCode() {
     }
 
-    public TUsersAuthSmsCode(Long id) {
+    public UsersAuthSmsCode(Long id) {
         this.id = id;
     }
 
-    public TUsersAuthSmsCode(Long id, Date dateCode, boolean status) {
+    public UsersAuthSmsCode(Long id, Date dateCode, boolean status) {
         this.id = id;
         this.dateCode = dateCode;
         this.status = status;
@@ -114,10 +114,10 @@ public class TUsersAuthSmsCode implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TUsersAuthSmsCode)) {
+        if (!(object instanceof UsersAuthSmsCode)) {
             return false;
         }
-        TUsersAuthSmsCode other = (TUsersAuthSmsCode) object;
+        UsersAuthSmsCode other = (UsersAuthSmsCode) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
