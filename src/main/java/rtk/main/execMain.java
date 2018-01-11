@@ -98,11 +98,17 @@ public class execMain {
             sms_params.add(new BasicNameValuePair("shortcode", "Rostelecom"));                                    
             senderInterface sender = new tele2sender(url, sms_params);
             
-            smsList.forEach((t) -> {
-                log.info("t => " + t);
-                log.info("tel => " + t.getUserId().getPhone());
-                sender.send(t.getUserId().getPhone(), t.getCode().toString());
-            });
+            for (UsersAuthSmsCode item : smsList) {
+                log.info("item => " + item);
+                log.info("tel => " + item.getUserId().getPhone());
+                String check_sms = sender.send(item.getUserId().getPhone(), item.getCode().toString());
+                item.setCheck_code(check_sms);
+                item.setStatus(true);
+                (new UsersAuthSmsCodeDAO(em)).updateItem(item);
+            }
+            
+            em.clear();
+            em.close();
 
         } catch (Exception e) {
             log.log(Logger.Level.ERROR, e);

@@ -55,6 +55,8 @@ public class UsersAuthSmsCode implements Serializable {
     @NotNull
     @Column(name = "status")
     private boolean status;
+    @Column(name = "check_code")
+    private String check_code;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     private UserEntity userId;
@@ -137,4 +139,14 @@ public class UsersAuthSmsCode implements Serializable {
         return "UsersAuthSmsCode{" + "id=" + id + ", code=" + code + ", status=" + status + '}';
     }
 
+    public String getCheck_code() {
+        return check_code;
+    }
+
+    public void setCheck_code(String check_code) {
+        this.check_code = check_code;
+    }
+
+    
+    
 }

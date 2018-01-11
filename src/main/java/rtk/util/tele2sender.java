@@ -32,15 +32,16 @@ public class tele2sender implements senderInterface {
 
     @Override
     public String send(String address, String message) {
+        log.info("send => " + address + " message => " + message);
         String res = null;
         List temp_params = new ArrayList();
         temp_params.addAll(params);
         temp_params.add(new BasicNameValuePair("msisdn", address));
         temp_params.add(new BasicNameValuePair("text", message));
-        temp_params.forEach((t) -> {
-            log.info("t => " + t);
-        });
-        res = httpConnect.doGet(this.url, temp_params, null);
+//        temp_params.forEach((t) -> {
+//            log.info("t => " + t);
+//        });
+        res = httpConnect.doGet(this.url, temp_params, null);        
         log.info("res = " + res);
         return res;
     }

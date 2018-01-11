@@ -153,17 +153,19 @@ public class utlHttp {
      * @return
      */
     public String doGet(String url, List params, Map<String, String> headerList) {
-        System.out.println("doGet");
+        log.info(String.format("doGet => %s", url));
         String res = null;
 
         if (params != null) {
             StringBuilder pStr = new StringBuilder();
             for (Object param : params) {
                 pStr.append(param.toString());
+                pStr.append("&");
             }
             if (pStr.toString().length() > 0) {
                 url = url + "?" + pStr.toString();
             }
+            log.info("url => " + url);
         }
 
         HttpClient client = new DefaultHttpClient();
