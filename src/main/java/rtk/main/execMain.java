@@ -41,6 +41,8 @@ import rtk.util.tele2sender;
 public class execMain {
 
     private final Logger log = Logger.getLogger(getClass().getName());
+    private final String SMS_MODULE = "sms_module";
+    private final String EMAIL_MODULE = "email_module";
 
     private final long i = 0;
     //private final String propFileName = "app.properties";
@@ -66,7 +68,7 @@ public class execMain {
     @Lock(LockType.WRITE)
     public synchronized void runSh(Timer time) {
         try {
-            log.info(String.format("******************* %s ****************************", new Date()));
+            log.info(String.format("*************** %s : %s ******************", SMS_MODULE, new Date()));
             try {
                 em = emf.createEntityManager();
             } catch (Exception em_ex) {
@@ -84,7 +86,9 @@ public class execMain {
             log.info("send_count = " + sendCount);
             String maxRecUserLog = getAppParams("max_rec_user_log", "30");
             log.info("max_rec_user_log = " + maxRecUserLog);
-
+            Date current_date = new Date();
+            String smsLastDateRun = getAppParams(SMS_MODULE + "_last_send_date", current_date.getTime()+"");
+            
             UsersSmsMessagesDAO logSmsDAO = new UsersSmsMessagesDAO(em);
             Map<String, Object> params = new HashMap();
             params.put("status", false);                                    
@@ -105,6 +109,7 @@ public class execMain {
                 item.setCheck_code(check_sms);
                 item.setStatus(true);
                 item.setCheck_code_date(new Date());
+                //item.setMessage_type("SMS");
                 (new UsersSmsMessagesDAO(em)).updateItem(item);
             }
             

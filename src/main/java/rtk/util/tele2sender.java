@@ -37,7 +37,7 @@ public class tele2sender implements senderInterface {
         List temp_params = new ArrayList();
         temp_params.addAll(params);
         temp_params.add(new BasicNameValuePair("msisdn", address));
-        temp_params.add(new BasicNameValuePair("text", message));
+        temp_params.add(new BasicNameValuePair("text", message));        
 //        temp_params.forEach((t) -> {
 //            log.info("t => " + t);
 //        });
