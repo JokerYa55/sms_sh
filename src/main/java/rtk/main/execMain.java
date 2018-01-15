@@ -75,8 +75,6 @@ public class execMain {
                 log.error(em_ex.getMessage());
             }
 
-            
-
             log.info("START \t\t\t=> " + (new Date()).toString());
             log.info("NEXT START \t\t=> " + time.getNextTimeout());
 
@@ -87,32 +85,87 @@ public class execMain {
             String maxRecUserLog = getAppParams("max_rec_user_log", "30");
             log.info("max_rec_user_log = " + maxRecUserLog);
             Date current_date = new Date();
-            String smsLastDateRun = getAppParams(SMS_MODULE + "_last_send_date", current_date.getTime()+"");
-            
+            String smsLastDateRun = getAppParams(SMS_MODULE + "_last_send_date", current_date.getTime() + "");
+
             UsersSmsMessagesDAO logSmsDAO = new UsersSmsMessagesDAO(em);
             Map<String, Object> params = new HashMap();
-            params.put("status", false);                                    
+            params.put("status", false);
             List<UsersSmsMessages> smsList = logSmsDAO.getList("UsersSmsMessages.findByStatus", UsersSmsMessages.class, params);
-            
+
             List sms_params = new ArrayList();
             sms_params.add(new BasicNameValuePair("operation", "send"));
             sms_params.add(new BasicNameValuePair("login", "rt_com:kclkb2b:1"));
             sms_params.add(new BasicNameValuePair("operation", "send"));
             sms_params.add(new BasicNameValuePair("password", "A2Y4LE6h"));
-            sms_params.add(new BasicNameValuePair("shortcode", "Rostelecom"));                                    
-            senderInterface sender = new tele2sender(url, sms_params);
-            
+            sms_params.add(new BasicNameValuePair("shortcode", "Rostelecom"));
+            senderInterface sms_sender = new tele2sender(url, sms_params);
+
             for (UsersSmsMessages item : smsList) {
                 log.info("item => " + item);
                 log.info("tel => " + item.getUserId().getPhone());
-                String check_sms = sender.send(item.getUserId().getPhone(), String.format("Kod %s. PTK", item.getMessage()).replaceAll(" ", "%20"));
+                String check_sms = sms_sender.send(item.getUserId().getPhone(), String.format("Kod %s. PTK", item.getMessage()).replaceAll(" ", "%20"));
                 item.setCheck_code(check_sms);
                 item.setStatus(true);
                 item.setCheck_code_date(new Date());
                 //item.setMessage_type("SMS");
                 (new UsersSmsMessagesDAO(em)).updateItem(item);
             }
-            
+
+            em.clear();
+            em.close();
+
+        } catch (Exception e) {
+            log.log(Logger.Level.ERROR, e);
+        }
+    }
+
+    @Schedule(minute = "*", second = "*/30", hour = "*")
+    @Lock(LockType.WRITE)
+    public synchronized void runShEmail(Timer time) {
+        try {
+            log.info(String.format("*************** %s : %s ******************", EMAIL_MODULE, new Date()));
+            try {
+                em = emf.createEntityManager();
+            } catch (Exception em_ex) {
+                log.error(em_ex.getMessage());
+            }
+
+            log.info("START \t\t\t=> " + (new Date()).toString());
+            log.info("NEXT START \t\t=> " + time.getNextTimeout());
+
+            String url = getAppParams("smtp_server_host", "null");
+            log.info("mail host = " + url);
+            String sendCount = getAppParams("smtp_server_port", "25");
+            log.info("send_count = " + sendCount);
+            String maxRecUserLog = getAppParams("max_rec_user_log", "30");
+            log.info("max_rec_user_log = " + maxRecUserLog);
+            Date current_date = new Date();
+            String smsLastDateRun = getAppParams(EMAIL_MODULE + "_last_send_date", current_date.getTime() + "");
+
+//            UsersSmsMessagesDAO logSmsDAO = new UsersSmsMessagesDAO(em);
+//            Map<String, Object> params = new HashMap();
+//            params.put("status", false);
+//            List<UsersSmsMessages> smsList = logSmsDAO.getList("UsersSmsMessages.findByStatus", UsersSmsMessages.class, params);
+//
+//            List sms_params = new ArrayList();
+//            sms_params.add(new BasicNameValuePair("operation", "send"));
+//            sms_params.add(new BasicNameValuePair("login", "rt_com:kclkb2b:1"));
+//            sms_params.add(new BasicNameValuePair("operation", "send"));
+//            sms_params.add(new BasicNameValuePair("password", "A2Y4LE6h"));
+//            sms_params.add(new BasicNameValuePair("shortcode", "Rostelecom"));
+//            senderInterface sms_sender = new tele2sender(url, sms_params);
+//
+//            for (UsersSmsMessages item : smsList) {
+//                log.info("item => " + item);
+//                log.info("tel => " + item.getUserId().getPhone());
+//                String check_sms = sms_sender.send(item.getUserId().getPhone(), String.format("Kod %s. PTK", item.getMessage()).replaceAll(" ", "%20"));
+//                item.setCheck_code(check_sms);
+//                item.setStatus(true);
+//                item.setCheck_code_date(new Date());
+//                //item.setMessage_type("SMS");
+//                (new UsersSmsMessagesDAO(em)).updateItem(item);
+//            }
+
             em.clear();
             em.close();
 
