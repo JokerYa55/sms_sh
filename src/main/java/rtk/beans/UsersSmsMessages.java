@@ -28,15 +28,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author vasil
  */
 @Entity
-@Table(name = "t_users_auth_sms_code")
+@Table(name = "t_users_sms")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UsersAuthSmsCode.findAll", query = "SELECT t FROM UsersAuthSmsCode t")
-    , @NamedQuery(name = "UsersAuthSmsCode.findById", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.id = :id")
-    , @NamedQuery(name = "UsersAuthSmsCode.findByDateCode", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.dateCode = :dateCode")
-    , @NamedQuery(name = "UsersAuthSmsCode.findByCode", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.code = :code")
-    , @NamedQuery(name = "UsersAuthSmsCode.findByStatus", query = "SELECT t FROM UsersAuthSmsCode t WHERE t.status = :status")})
-public class UsersAuthSmsCode implements Serializable {
+    @NamedQuery(name = "UsersSmsMessages.findAll", query = "SELECT t FROM UsersSmsMessages t")
+    , @NamedQuery(name = "UsersSmsMessages.findById", query = "SELECT t FROM UsersSmsMessages t WHERE t.id = :id")
+    , @NamedQuery(name = "UsersSmsMessages.findByDateCode", query = "SELECT t FROM UsersSmsMessages t WHERE t.dateCode = :dateCode")
+    , @NamedQuery(name = "UsersSmsMessages.findByCode", query = "SELECT t FROM UsersSmsMessages t WHERE t.message = :message")
+    , @NamedQuery(name = "UsersSmsMessages.findByStatus", query = "SELECT t FROM UsersSmsMessages t WHERE t.status = :status")})
+public class UsersSmsMessages implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,26 +49,29 @@ public class UsersAuthSmsCode implements Serializable {
     @Column(name = "date_code")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCode;
-    @Column(name = "code")
-    private Integer code;
+    @Column(name = "message")
+    private String message;
     @Basic(optional = false)
     @NotNull
     @Column(name = "status")
     private boolean status;
     @Column(name = "check_code")
     private String check_code;
+    @Column(name = "check_code_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date check_code_date;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     private UserEntity userId;
 
-    public UsersAuthSmsCode() {
+    public UsersSmsMessages() {
     }
 
-    public UsersAuthSmsCode(Long id) {
+    public UsersSmsMessages(Long id) {
         this.id = id;
     }
 
-    public UsersAuthSmsCode(Long id, Date dateCode, boolean status) {
+    public UsersSmsMessages(Long id, Date dateCode, boolean status) {
         this.id = id;
         this.dateCode = dateCode;
         this.status = status;
@@ -90,14 +93,6 @@ public class UsersAuthSmsCode implements Serializable {
         this.dateCode = dateCode;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
     public boolean getStatus() {
         return status;
     }
@@ -116,10 +111,10 @@ public class UsersAuthSmsCode implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsersAuthSmsCode)) {
+        if (!(object instanceof UsersSmsMessages)) {
             return false;
         }
-        UsersAuthSmsCode other = (UsersAuthSmsCode) object;
+        UsersSmsMessages other = (UsersSmsMessages) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -134,11 +129,6 @@ public class UsersAuthSmsCode implements Serializable {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "UsersAuthSmsCode{" + "id=" + id + ", code=" + code + ", status=" + status + '}';
-    }
-
     public String getCheck_code() {
         return check_code;
     }
@@ -147,6 +137,26 @@ public class UsersAuthSmsCode implements Serializable {
         this.check_code = check_code;
     }
 
-    
+    public Date getCheck_code_date() {
+        return check_code_date;
+    }
+
+    public void setCheck_code_date(Date check_code_date) {
+        this.check_code_date = check_code_date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "UsersSmsMessages{" + "id=" + id + ", message=" + message + ", status=" + status + ", check_code=" + check_code + ", check_code_date=" + check_code_date + '}';
+    }
+
     
 }

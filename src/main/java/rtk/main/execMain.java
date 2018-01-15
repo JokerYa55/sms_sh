@@ -25,9 +25,9 @@ import javax.persistence.Persistence;
 import org.apache.http.message.BasicNameValuePair;
 import org.jboss.logging.Logger;
 import rtk.DAO.AppPropertiesDAO;
-import rtk.DAO.UsersAuthSmsCodeDAO;
+import rtk.DAO.UsersSmsMessagesDAO;
 import rtk.beans.AppProperties;
-import rtk.beans.UsersAuthSmsCode;
+import rtk.beans.UsersSmsMessages;
 import rtk.interfaces.senderInterface;
 import rtk.util.tele2sender;
 
@@ -62,7 +62,7 @@ public class execMain {
         log.debug("preDestriy");
     }
 
-    @Schedule(minute = "*/1", hour = "*")
+    @Schedule(minute = "*", second = "*/30", hour = "*")
     @Lock(LockType.WRITE)
     public synchronized void runSh(Timer time) {
         try {
@@ -85,10 +85,10 @@ public class execMain {
             String maxRecUserLog = getAppParams("max_rec_user_log", "30");
             log.info("max_rec_user_log = " + maxRecUserLog);
 
-            UsersAuthSmsCodeDAO logSmsDAO = new UsersAuthSmsCodeDAO(em);
+            UsersSmsMessagesDAO logSmsDAO = new UsersSmsMessagesDAO(em);
             Map<String, Object> params = new HashMap();
             params.put("status", false);                                    
-            List<UsersAuthSmsCode> smsList = logSmsDAO.getList("UsersAuthSmsCode.findByStatus", UsersAuthSmsCode.class, params);
+            List<UsersSmsMessages> smsList = logSmsDAO.getList("UsersSmsMessages.findByStatus", UsersSmsMessages.class, params);
             
             List sms_params = new ArrayList();
             sms_params.add(new BasicNameValuePair("operation", "send"));
@@ -98,13 +98,14 @@ public class execMain {
             sms_params.add(new BasicNameValuePair("shortcode", "Rostelecom"));                                    
             senderInterface sender = new tele2sender(url, sms_params);
             
-            for (UsersAuthSmsCode item : smsList) {
+            for (UsersSmsMessages item : smsList) {
                 log.info("item => " + item);
                 log.info("tel => " + item.getUserId().getPhone());
-                String check_sms = sender.send(item.getUserId().getPhone(), item.getCode().toString());
+                String check_sms = sender.send(item.getUserId().getPhone(), String.format("Kod %s. PTK", item.getMessage()).replaceAll(" ", "%20"));
                 item.setCheck_code(check_sms);
                 item.setStatus(true);
-                (new UsersAuthSmsCodeDAO(em)).updateItem(item);
+                item.setCheck_code_date(new Date());
+                (new UsersSmsMessagesDAO(em)).updateItem(item);
             }
             
             em.clear();
