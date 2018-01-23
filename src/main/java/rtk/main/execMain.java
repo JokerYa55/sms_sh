@@ -90,7 +90,8 @@ public class execMain {
             UsersSmsMessagesDAO logSmsDAO = new UsersSmsMessagesDAO(em);
             Map<String, Object> params = new HashMap();
             params.put("status", false);
-            List<UsersSmsMessages> smsList = logSmsDAO.getList("UsersSmsMessages.findByStatus", UsersSmsMessages.class, params);
+            params.put("message_type", "SMS");
+            List<UsersSmsMessages> smsList = logSmsDAO.getList("UsersSmsMessages.findByTypeStatus", UsersSmsMessages.class, params);
 
             List sms_params = new ArrayList();
             sms_params.add(new BasicNameValuePair("operation", "send"));

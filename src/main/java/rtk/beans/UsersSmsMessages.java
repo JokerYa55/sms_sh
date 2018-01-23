@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "UsersSmsMessages.findById", query = "SELECT t FROM UsersSmsMessages t WHERE t.id = :id")
     , @NamedQuery(name = "UsersSmsMessages.findByDateCode", query = "SELECT t FROM UsersSmsMessages t WHERE t.dateCode = :dateCode")
     , @NamedQuery(name = "UsersSmsMessages.findByCode", query = "SELECT t FROM UsersSmsMessages t WHERE t.message = :message")
+    , @NamedQuery(name = "UsersSmsMessages.findByTypeStatus", query = "SELECT t FROM UsersSmsMessages t WHERE  t.status = :status and t.message_type = :message_type")
     , @NamedQuery(name = "UsersSmsMessages.findByStatus", query = "SELECT t FROM UsersSmsMessages t WHERE t.status = :status")})
 public class UsersSmsMessages implements Serializable {
 
@@ -168,5 +169,4 @@ public class UsersSmsMessages implements Serializable {
         this.message_type = message_type;
     }
 
-    
 }
