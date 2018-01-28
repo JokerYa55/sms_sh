@@ -66,6 +66,7 @@ public class UsersSmsMessages implements Serializable {
     private UserEntity userId;
     @Column(name = "message_type", length = 30)
     private String message_type;
+    
 
     public UsersSmsMessages() {
     }

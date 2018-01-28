@@ -64,7 +64,7 @@ public class execMain {
         log.debug("preDestriy");
     }
 
-    @Schedule(minute = "*", second = "*/30", hour = "*")
+    @Schedule(minute = "*/1", second = "*/30", hour = "*")
     @Lock(LockType.WRITE)
     public synchronized void runSh(Timer time) {
         try {
